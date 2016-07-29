@@ -16,9 +16,17 @@ namespace Insertion_Sort
             Console.Write("Original Array: ");
             Console.WriteLine(ArrayToString(originalArray));
 
-            Console.Write("Sorted Array: ");
-            int[] sortedArray = SortArray(originalArray);
-            Console.WriteLine(ArrayToString(sortedArray));
+            InsertionSort<int> nonDecreasingsorter = new InsertionSort<int>(new NonDecreasingIntegerComparer());
+            int[] nonDecreasingSortedArray = nonDecreasingsorter.Sort(originalArray);
+
+            Console.Write("Non Decreasing Sorted Array: ");
+            Console.WriteLine(ArrayToString(nonDecreasingSortedArray));
+
+            InsertionSort<int> nonIncreasingsorter = new InsertionSort<int>(new NonIncreasingIntegerComparer());
+            int[] nonIncreasingSortedArray = nonIncreasingsorter.Sort(originalArray);
+
+            Console.Write("Non Increasing Sorted Array: ");
+            Console.WriteLine(ArrayToString(nonIncreasingSortedArray));
         }
 
         public static String ArrayToString(int[] array)
@@ -26,28 +34,28 @@ namespace Insertion_Sort
             StringBuilder stringBuilder = new StringBuilder("[");
             foreach(int i in array)
             {
-                stringBuilder.AppendFormat("{0}, ", i);
+                stringBuilder.AppendFormat("{0}, ", i.ToString());
             }
             stringBuilder.Remove(stringBuilder.Length - 2, 2);
             stringBuilder.Append("]");
             return stringBuilder.ToString();
         }
 
-        public static int[] SortArray(int[] array)
+    }
+
+    class NonDecreasingIntegerComparer : IComparer<int>
+    {
+        public int Compare(int x, int y)
         {
-            int[] sortedArray = (int[]) array.Clone();
-            for (int i = 1; i < sortedArray.Length; i++)
-            {
-                int key = sortedArray[i];
-                int j = i - 1;
-                while (j > -1 && sortedArray[j] > key)
-                {
-                    sortedArray[j + 1] = sortedArray[j];
-                    j = j - 1;
-                }
-                sortedArray[j + 1] = key;
-            }
-            return sortedArray;
+            return x == y ? 0 : x > y ? 1 : -1;
+        }
+    }
+
+    class NonIncreasingIntegerComparer : IComparer<int>
+    {
+        public int Compare(int x, int y)
+        {
+            return x == y ? 0 : x < y ? 1 : -1;
         }
     }
 }
